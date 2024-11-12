@@ -301,6 +301,18 @@ class EmbeddedViewParams {
     mutators_stack_.PushBackdropFilter(filter, filter_rect);
   }
 
+  void PushClip(const SkRect& clip_shape) {
+    mutators_stack_.PushClipRect(clip_shape);
+  }
+
+  void PushClip(const SkRRect& clip_shape) {
+    mutators_stack_.PushClipRRect(clip_shape);
+  }
+
+  void PushClip(const SkPath& clip_shape) {
+    mutators_stack_.PushClipPath(clip_shape);
+  }
+
   bool operator==(const EmbeddedViewParams& other) const {
     return size_points_ == other.size_points_ &&
            mutators_stack_ == other.mutators_stack_ &&
@@ -512,6 +524,10 @@ class ExternalViewEmbedder {
   virtual void PushFilterToVisitedPlatformViews(
       const std::shared_ptr<const DlImageFilter>& filter,
       const SkRect& filter_rect) {}
+
+  virtual void PushClipRectToVisitedPlatformViews(const SkRect& clip_shape) {}
+  virtual void PushClipRRectToVisitedPlatformViews(const SkRRect& clip_shape) {}
+  virtual void PushClipPathToVisitedPlatformViews(const SkPath& clip_shape) {}
 
  private:
   bool used_this_frame_ = false;

@@ -345,6 +345,18 @@ void PlatformViewsController::PushFilterToVisitedPlatformViews(
   }
 }
 
+template <class T>
+void PlatformViewsController::PushClipToVisitedPlatformViews(const T& clip_shape) {
+  for (int64_t id : visited_platform_views_) {
+    EmbeddedViewParams params = current_composition_params_[id];
+    params.PushClip(clip_shape);
+    current_composition_params_[id] = params;
+  }
+}
+template void PlatformViewsController::PushClipToVisitedPlatformViews<SkRect>(const SkRect&);
+template void PlatformViewsController::PushClipToVisitedPlatformViews<SkRRect>(const SkRRect&);
+template void PlatformViewsController::PushClipToVisitedPlatformViews<SkPath>(const SkPath&);
+
 void PlatformViewsController::PrerollCompositeEmbeddedView(
     int64_t view_id,
     std::unique_ptr<EmbeddedViewParams> params) {
